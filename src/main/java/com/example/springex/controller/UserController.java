@@ -1,7 +1,8 @@
 package com.example.springex.controller;
 
+import com.example.springex.dto.UserRequest;
+import com.example.springex.dto.UserResponse;
 import com.example.springex.service.UserService;
-import org.apache.catalina.realm.UserDatabaseRealm;
 import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
