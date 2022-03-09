@@ -3,7 +3,7 @@ package com.example.springex.controller;
 import com.example.springex.dto.UserRequest;
 import com.example.springex.dto.UserResponse;
 import com.example.springex.service.UserService;
-import org.apache.tomcat.jni.User;
+import entitiy.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("")
 public class UserController {
 
 
@@ -22,25 +22,36 @@ public class UserController {
     //회원가입 API(유저 등록)
     @PostMapping("")
     public ResponseEntity<User> signUp(@RequestBody UserRequest userRequest){
-        User user = userRequest.insert(userRequest);
+        User user = userService.insert(userRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
     //모든 회원 정보를 가져 오는 API
     @GetMapping("/users")
     public ResponseEntity<List<User>> getALLUser(){
-        List<User> userList = userService.getAllUser();
+        List<User> userList = userService.getAllUsers();
         return ResponseEntity.status(HttpStatus.OK).body(userList);
+    }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<UserResponse> putUser(@PathVariable long id, @RequestBody UserRequest userRequest){
+
+        // UserRequest 객체를 유저로부터 받아서 userService에 넘겨줘서 해당 유저를 변경
+        User user = userService.update(id, userRequest);
+        UserResponse userResponse = new UserResponse();
+
+        userResponse.setAge(user.getAge());
+        userResponse.setEmail(user.getEmail());
+
+        return ResponseEntity.status(HttpStatus.OK).body(userResponse);
     }
 
     // 회원 정보를 가져오는 API
     // serverhost:8080/users//123
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUser(@PathVariable("id") long id){
+    public ResponseEntity<User> getUser(@PathVariable long id){
         User user = userService.getUser(id);
-        UserResponse userResponse = new UserResponse();
-        userResponse.setId(user.getId());
-        userResponse.setAge(user.getAge());
+        UserResponse userResponse = convert(user);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
@@ -49,5 +60,13 @@ public class UserController {
     public ResponseEntity<Object> delete(@PathVariable("id") long id){
         userService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
+
+    private UserResponse convert(User user){
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(user.getId());
+        userResponse.setAge(user.getAge());
+
+        return userResponse;
     }
 }

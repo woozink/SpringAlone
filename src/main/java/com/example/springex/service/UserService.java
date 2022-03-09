@@ -3,33 +3,34 @@ package com.example.springex.service;
 import com.example.springex.dto.UserRequest;
 import entitiy.User;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static entitiy.User.user;
 
 @Service
 public class UserService {
-    private List<User> users = new ArrayList<>();
+    private Map<Long, User> users = new HashMap<>();
     private long newUserId = 1L;
 
     public User insert(UserRequest userRequest){
         //회원 가입
         //값을 받아와서 users에 저장
-        user = new User;
+        user = new User();
         user.setAge(userRequest.getAge());
         user.setEmail(userRequest.getEmail());
         user.setPassword(userRequest.getPassword());
         user.setName(userRequest.getName());
         user.setId(newUserId);
         newUserId++;
-        users.add(user);
+        users.put(user.getId(), user);
         return user;
     }
 
-    public List<User> getAllUser() {
-        return users;
+    public List<User> getAllUsers() {
+        return new ArrayList<>(users.values());
     }
 
     public User getUser(long id) {

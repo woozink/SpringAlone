@@ -3,6 +3,9 @@ package com.example.springex.dto;
 public class UserResponse {
     private long id;
     private String name;
+    private String email;
+    private String password;
+    private int age;
 
     public long getId() {
         return id;
@@ -44,7 +47,5 @@ public class UserResponse {
         this.age = age;
     }
 
-    private String email;
-    private String password;
-    private int age;
+
 }

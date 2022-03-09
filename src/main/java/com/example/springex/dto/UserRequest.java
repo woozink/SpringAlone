@@ -2,19 +2,11 @@ package com.example.springex.dto;
 
 import org.apache.tomcat.jni.User;
 
-public class UserRequest {private long id;
+public class UserRequest {
     private String name;
     private String email;
     private String password;
     private int age;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
