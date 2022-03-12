@@ -14,13 +14,11 @@ import java.util.List;
 @RestController
 @RequestMapping("")
 public class UserController {
-
-
     @Autowired
     private UserService userService;
 
     //회원가입 API(유저 등록)
-    @PostMapping("")
+    @PostMapping("/users")
     public ResponseEntity<User> signUp(@RequestBody UserRequest userRequest){
         User user = userService.insert(userRequest);
 
@@ -33,15 +31,16 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
 
+    //회원 정보 수정
     @PutMapping("/users/{id}")
     public ResponseEntity<UserResponse> putUser(@PathVariable long id, @RequestBody UserRequest userRequest){
-
         // UserRequest 객체를 유저로부터 받아서 userService에 넘겨줘서 해당 유저를 변경
         User user = userService.update(id, userRequest);
         UserResponse userResponse = new UserResponse();
 
         userResponse.setAge(user.getAge());
         userResponse.setEmail(user.getEmail());
+        userResponse.setName(user.getName());
 
         return ResponseEntity.status(HttpStatus.OK).body(userResponse);
     }
@@ -51,6 +50,9 @@ public class UserController {
     @GetMapping("/users/{id}")
     public ResponseEntity<User> getUser(@PathVariable long id){
         User user = userService.getUser(id);
+        if(user==null){
+            return ResponseEntity.notFound().build();
+        }
         UserResponse userResponse = convert(user);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
@@ -64,8 +66,10 @@ public class UserController {
 
     private UserResponse convert(User user){
         UserResponse userResponse = new UserResponse();
-        userResponse.setId(user.getId());
+
         userResponse.setAge(user.getAge());
+        userResponse.setName(user.getName());
+        userResponse.setEmail(user.getEmail());
 
         return userResponse;
     }

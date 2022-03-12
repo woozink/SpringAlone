@@ -1,7 +1,6 @@
 package entitiy;
 
 public class User {
-    public static User user;
     private long id;
     private String name;
     private String email;
