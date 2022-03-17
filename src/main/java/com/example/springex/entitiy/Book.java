@@ -1,4 +1,4 @@
-package entitiy;
+package com.example.springex.entitiy;
 
 public class Book {
     public static Book book;

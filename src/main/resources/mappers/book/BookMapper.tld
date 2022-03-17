@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springex.mapper.BookMapper">
+    <select id="findAllBooks" resultType="com.example.springex.entitiy.Book">
+        SELECT *
+        FROM books
+    </select>
+
+    <select id="findBookById" resultType="com.example.springex.entitiy.Book">
+        SELECT *
+        FROM books
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertBook" useGeneratedKeys="true" keyProperty="id">
+        INSERT books(name,author,page)
+        VALUES(#{user.name}, #{user.author}, #{user.page});
+    </insert>
+
+    <select id="deleteBookById" resultType="com.example.springex.entitiy.Book">
+        SELECT *
+        FROM books
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateBook" useGeneratedKeys="true" keyProperty="id">
+        INSERT users(name,author,page)
+        VALUES(#{user.name}, #{user.author}, #{user.page});
+    </update>
+
+</mapper>

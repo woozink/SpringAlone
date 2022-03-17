@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springex.mapper.UserMapper">
+    <select id="findAllUsers" resultType="com.example.springex.entitiy.User">
+        SELECT *
+        FROM users
+    </select>
+
+    <select id="findUserById" resultType="com.example.springex.entitiy.User">
+        SELECT *
+        FROM users
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        INSERT users(name,email,password,age)
+        VALUES(#{user.name}, #{user.email}, #{user.password}, #{user.age});
+    </insert>
+
+    <select id="deleteUserById" resultType="com.example.springex.entitiy.User">
+        SELECT *
+        FROM users
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateUser" useGeneratedKeys="true" keyProperty="id">
+        INSERT users(name,email,password,age)
+        VALUES(#{user.name}, #{user.email}, #{user.password}, #{user.age});
+    </update>
+
+</mapper>

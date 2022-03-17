@@ -1,52 +1,48 @@
 package com.example.springex.service;
 
 import com.example.springex.dto.UserRequest;
-import entitiy.User;
+import com.example.springex.entitiy.User;
+import com.example.springex.mapper.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+import java.util.List;
 
 
 @Service
 public class UserService {
-    private final Map<Long, User> users = new HashMap<>();
-    private long newUserId = 1L;
+    // 보안이 취약하다 -> 오히려 보안이 더 좋을 수 있음
+    // '다른 사람'이랑 공유하기 어렵다
+    // 서버들간에 데이터를 동기화를 해야한다 -> 동기화 비용(시간/memory/cpu 사용), 시간, 복잡해짐
+    // 서버를 껐다 키면 데이터가 날아감
+    // 데이터를 직접 관리해야함 - 데이터 정합성, 트랜잭션, 조회
+    @Autowired
+    private UserMapper userMapper;
 
+    //회원 가입
     public User insert(UserRequest userRequest) {
-        //회원 가입
-        //값을 받아와서 users에 저장
         User user = new User();
         user.setAge(userRequest.getAge());
         user.setEmail(userRequest.getEmail());
         user.setPassword(userRequest.getPassword());
         user.setName(userRequest.getName());
-        user.setId(newUserId);
-        newUserId++;
-        users.put(user.getId(), user);
+        userMapper.insertUser(user);
 
         return user;
     }
 
     public List<User> getAllUsers() {
-        return new ArrayList<>(users.values());
+        return userMapper.findAllUsers();
     }
 
     public User getUser(long id) {
         //특정 유저의 정보
-        return users.get(id);
+        return userMapper.findUserById(id);
     }
 
     //9
     public User update(long id, UserRequest userRequest) {
-        // 1 - user1
-        // 2 - user2
-        // 5 - user5
-        // 9 - user9
-        // 1,2,5,9
-        User user = users.get(id);
+        User user = new User();
         if (user == null) {
             return null;
         } else {
@@ -54,12 +50,13 @@ public class UserService {
             user.setEmail(userRequest.getEmail());
             user.setPassword(userRequest.getPassword());
             user.setName(userRequest.getName());
+            userMapper.updateUser(user);
             return user;
         }
     }
 
     public void delete(long id) {
-        users.remove(id);
+        userMapper.deleteUserById(id);
     }
 }
 

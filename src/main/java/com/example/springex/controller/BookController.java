@@ -2,7 +2,7 @@ package com.example.springex.controller;
 import com.example.springex.dto.BookRequest;
 import com.example.springex.dto.BookResponse;
 import com.example.springex.service.BookService;
-import entitiy.Book;
+import com.example.springex.entitiy.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

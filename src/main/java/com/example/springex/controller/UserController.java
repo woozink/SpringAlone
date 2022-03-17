@@ -3,7 +3,7 @@ package com.example.springex.controller;
 import com.example.springex.dto.UserRequest;
 import com.example.springex.dto.UserResponse;
 import com.example.springex.service.UserService;
-import entitiy.User;
+import com.example.springex.entitiy.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +21,9 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<User> signUp(@RequestBody UserRequest userRequest){
         User user = userService.insert(userRequest);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
+
     //모든 회원 정보를 가져 오는 API
     @GetMapping("/users")
     public ResponseEntity<List<User>> getALLUser(){
@@ -58,7 +58,7 @@ public class UserController {
     }
 
     //특정 ID의 유저 삭제
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<Object> delete(@PathVariable("id") long id){
         userService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
@@ -66,7 +66,6 @@ public class UserController {
 
     private UserResponse convert(User user){
         UserResponse userResponse = new UserResponse();
-
         userResponse.setAge(user.getAge());
         userResponse.setName(user.getName());
         userResponse.setEmail(user.getEmail());

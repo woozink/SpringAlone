@@ -1,56 +1,48 @@
 package com.example.springex.service;
 
 import com.example.springex.dto.BookRequest;
-import entitiy.Book;
+import com.example.springex.entitiy.Book;
+import com.example.springex.mapper.BookMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static entitiy.Book.book;
+import static com.example.springex.entitiy.Book.book;
 
 
 // Spring boot + MyBatis + MySQL
 @Service
 public class BookService {
-    private Map<Long, Book> books = new HashMap<>();
-    private long newBookId =1L;
+    @Autowired
+    private BookMapper bookMapper;
 
     public Book insert(BookRequest bookRequest) {
         book = new Book();
         book.setName(bookRequest.getName());
         book.setAuthor(bookRequest.getAuthor());
         book.setPage(bookRequest.getPage());
-        book.setId(newBookId);
-        newBookId++;
-        books.put(book.getId(), book);
+        bookMapper.insertBook(book);
 
         return book;
     }
 
     public List<Book> getAllBooks() {
-        return new ArrayList<>(books.values());
+        return new bookMapper.findAllBooks();
     }
 
     public Book getBook(long id) {
-        //특정 책의 정보
-        return books.get(id);
-//        for(int i = 0; i < books.size(); i++){
-//            Book book = books.get(i);
-//            if(id == book.getId()){
-//                return book;
-//            }
-//        }
-//        return null;
+      return bookMapper.findBookById(id);
     }
 
     public void deleteBook(long id) {
-        books.remove(id);
+        bookMapper.deleteBookById(id);
     }
 
 
     public Book update(long id, BookRequest bookRequest) {
-        Book book = books.get(id);
+        Book book = new Book();
         if(book == null){
             return null;
         }
@@ -58,6 +50,7 @@ public class BookService {
             book.setAuthor(bookRequest.getAuthor());
             book.setName(bookRequest.getName());
             book.setPage(bookRequest.getPage());
+            bookMapper.updateBook(book);
             return book;
         }
     }
