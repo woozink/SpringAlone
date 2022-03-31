@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springex.mapper.LoanMapper">
+    <select id="findById" resultType="com.example.springex.entitiy.Loan">
+        SELECT *
+        FROM loans
+        WHERE id = #{id}
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO loans(id, bookId, userId, loanDateTime, expireDateTime, returnDateTime, isReturned)
+        VALUES (null, #{loan.bookId}, #{loan.userId}, #{loan.loanDateTime}, #{loan.expireDateTime},
+                #{loan.returnDateTime}, #{loan.isReturned});
+    </insert>
+
+    <update id="extendDate">
+        UPDATE loans
+        SET expireDateTime=#{loan.expireDateTime}
+        WHERE id = #{id}
+    </update>
+
+    <update id="returnBook">
+        UPDATE loans
+        SET
+            isReturned     = TRUE,
+            returnDateTime = NOW()
+        WHERE id = #{id}
+    </update>
+</mapper>

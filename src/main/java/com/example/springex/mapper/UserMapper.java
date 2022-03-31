@@ -12,6 +12,6 @@ public interface UserMapper {
     User findUserById(long id);
     User findUserByNameAndAge(@Param("name") String name, @Param("age") int age);
     void insertUser(@Param("user") User user);
-    void updateUser(User user);
+    void updateUser(@Param("id") long id, @Param("user") User user);
     void deleteUserById(long id);
 }

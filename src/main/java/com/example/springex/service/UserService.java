@@ -1,5 +1,4 @@
 package com.example.springex.service;
-
 import com.example.springex.dto.UserRequest;
 import com.example.springex.entitiy.User;
 import com.example.springex.mapper.UserMapper;
@@ -40,9 +39,10 @@ public class UserService {
         return userMapper.findUserById(id);
     }
 
-    //9
     public User update(long id, UserRequest userRequest) {
-        User user = new User();
+        // 해당 id를 가진 유저가 없으면 null을 바로 반환
+        // 해당 id를 가진 유저가 있으면 유저 수정 후 반환
+        User user = getUser(id);
         if (user == null) {
             return null;
         } else {
@@ -50,7 +50,7 @@ public class UserService {
             user.setEmail(userRequest.getEmail());
             user.setPassword(userRequest.getPassword());
             user.setName(userRequest.getName());
-            userMapper.updateUser(user);
+            userMapper.updateUser(id, user);
             return user;
         }
     }

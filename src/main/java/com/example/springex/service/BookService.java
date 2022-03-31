@@ -29,7 +29,7 @@ public class BookService {
     }
 
     public List<Book> getAllBooks() {
-        return new bookMapper.findAllBooks();
+        return bookMapper.findAllBooks();
     }
 
     public Book getBook(long id) {

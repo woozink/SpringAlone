@@ -26,7 +26,7 @@ public class UserController {
 
     //모든 회원 정보를 가져 오는 API
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getALLUser(){
+    public ResponseEntity<List<User>> getALLUsers(){
         List<User> userList = userService.getAllUsers();
         return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
@@ -36,8 +36,12 @@ public class UserController {
     public ResponseEntity<UserResponse> putUser(@PathVariable long id, @RequestBody UserRequest userRequest){
         // UserRequest 객체를 유저로부터 받아서 userService에 넘겨줘서 해당 유저를 변경
         User user = userService.update(id, userRequest);
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
         UserResponse userResponse = new UserResponse();
 
+        userResponse.setId(user.getId());
         userResponse.setAge(user.getAge());
         userResponse.setEmail(user.getEmail());
         userResponse.setName(user.getName());
@@ -48,13 +52,13 @@ public class UserController {
     // 회원 정보를 가져오는 API
     // serverhost:8080/users//123
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUser(@PathVariable long id){
+    public ResponseEntity<UserResponse> getUser(@PathVariable long id){
         User user = userService.getUser(id);
         if(user==null){
             return ResponseEntity.notFound().build();
         }
         UserResponse userResponse = convert(user);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+        return ResponseEntity.status(HttpStatus.OK).body(userResponse);
     }
 
     //특정 ID의 유저 삭제

@@ -19,15 +19,21 @@
         VALUES(#{user.name}, #{user.email}, #{user.password}, #{user.age});
     </insert>
 
-    <select id="deleteUserById" resultType="com.example.springex.entitiy.User">
-        SELECT *
-        FROM users
-        WHERE id = #{id}
-    </select>
+    <delete id="deleteUserById">
+        DELETE FROM users
+        WHERE
+            id = #{id}
+    </delete>
 
-    <update id="updateUser" useGeneratedKeys="true" keyProperty="id">
-        INSERT users(name,email,password,age)
-        VALUES(#{user.name}, #{user.email}, #{user.password}, #{user.age});
+    <update id="updateUser">
+        UPDATE users
+        SET
+            name=#{user.name},
+            email=#{user.email},
+            password=#{user.password},
+            age=#{user.age}
+        WHERE
+            id = #{id}
     </update>
 
 </mapper>
