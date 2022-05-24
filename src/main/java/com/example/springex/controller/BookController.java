@@ -1,4 +1,5 @@
 package com.example.springex.controller;
+
 import com.example.springex.dto.BookRequest;
 import com.example.springex.dto.BookResponse;
 import com.example.springex.service.BookService;
@@ -18,24 +19,26 @@ public class BookController {
 
     //도서등록
     @PostMapping("/books")
-    public ResponseEntity<Book> registraionBook(@RequestBody BookRequest bookRequest){
+    public ResponseEntity<Book> registraionBook(@RequestBody BookRequest bookRequest) {
         Book book = bookService.insert(bookRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(book);
     }
+
     // 도서 전체 조회
     @GetMapping("/books")
-    public ResponseEntity<List<Book>> getALLBook(){
+    public ResponseEntity<List<Book>> getALLBook() {
         List<Book> bookList = bookService.getAllBooks();
         return ResponseEntity.status(HttpStatus.OK).body(bookList);
     }
 
     // 도서 수정(도서명, 저자, 페이지)
     @PutMapping("/books/{id}")
-    public ResponseEntity<BookResponse> putBook(@PathVariable long id, @RequestBody BookRequest bookRequest){
+    public ResponseEntity<BookResponse> putBook(@PathVariable long id, @RequestBody BookRequest bookRequest) {
         Book book = bookService.update(id, bookRequest);
         BookResponse bookResponse = new BookResponse();
 
+        bookResponse.setId(id);
         bookResponse.setName(book.getName());
         bookResponse.setAuthor(book.getAuthor());
         bookResponse.setPage(book.getPage());
@@ -43,23 +46,47 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(bookResponse);
     }
 
+
     // 특정 Id의 도서 조회
     @GetMapping("/books/{id}")
-    public ResponseEntity<Book> getBook(@PathVariable long id){
+    public ResponseEntity<Book> getBook(@PathVariable long id) {
         Book book = bookService.getBook(id);
-        if(book== null){
+        if (book == null) {
             return ResponseEntity.notFound().build();
         }
         BookResponse userResponse = convert(book);
         return ResponseEntity.status(HttpStatus.OK).body(book);
     }
 
+    // 특정 Id의 반납 여부 조회
+    @GetMapping("/books/rented/{id}")
+    public ResponseEntity<Book> isRented(@PathVariable long id) {
+        Book book = bookService.isRented(id);
+        BookResponse bookResponse = new BookResponse();
+
+        if (book == null) {
+            return ResponseEntity.notFound().build();
+        }
+        bookResponse.isRented();
+
+        return ResponseEntity.status(HttpStatus.OK).body(book);
+    }
+
     // 특정 ID의 도서 삭제
     @DeleteMapping("/books/{id}")
-    public ResponseEntity<Object> deleteBook(@PathVariable("id") long id){
+    public ResponseEntity<Object> deleteBook(@PathVariable("id") long id) {
         bookService.deleteBook(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
+
+    // 비활성화된 ID를 다시 활성화로 바꿈
+    @PatchMapping("/books/{id}")
+    public ResponseEntity<Void> turnOnBook(@PathVariable long id){
+        bookService.turnOnBook(id);
+        return ResponseEntity.ok().build();
+    }
+
+
 
 
     private BookResponse convert(Book book) {
@@ -71,11 +98,6 @@ public class BookController {
 
         return bookResponse;
     }
-
-
-
-
-
 
 
 }

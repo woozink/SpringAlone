@@ -19,11 +19,11 @@
         VALUES(#{user.name}, #{user.email}, #{user.password}, #{user.age});
     </insert>
 
-    <delete id="deleteUserById">
-        DELETE FROM users
-        WHERE
-            id = #{id}
-    </delete>
+    <update id="deactivateUserById">
+        UPDATE users
+        SET isActivate = 0
+        WHERE  id = #{id}
+    </update>
 
     <update id="updateUser">
         UPDATE users
@@ -35,5 +35,11 @@
         WHERE
             id = #{id}
     </update>
+
+    <select id="findLoanDataById`" resultType="com.example.springex.entitiy.User">
+        SELECT *
+        FROM users
+        WHERE id = #{id}
+    </select>
 
 </mapper>

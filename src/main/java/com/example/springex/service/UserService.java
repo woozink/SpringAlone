@@ -1,4 +1,5 @@
 package com.example.springex.service;
+
 import com.example.springex.dto.UserRequest;
 import com.example.springex.entitiy.User;
 import com.example.springex.mapper.UserMapper;
@@ -56,7 +57,13 @@ public class UserService {
     }
 
     public void delete(long id) {
-        userMapper.deleteUserById(id);
+        // soft delete
+        userMapper.deactivateUserById(id);
     }
+
+    public User getLoanData(long id) {
+        return userMapper.findUserById(id);
+    }
+
 }
 

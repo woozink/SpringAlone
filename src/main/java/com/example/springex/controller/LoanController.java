@@ -3,6 +3,7 @@ package com.example.springex.controller;
 
 import com.example.springex.dto.LoanRequest;
 import com.example.springex.dto.LoanResponse;
+import com.example.springex.entitiy.Book;
 import com.example.springex.entitiy.Loan;
 import com.example.springex.service.LoanService;
 import org.apache.ibatis.annotations.Param;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.RequestScope;
+
+import java.util.List;
 
 // Spring Bean이란?
 // 자바 어노테이션
@@ -36,6 +39,10 @@ public class LoanController {
         // 대출날짜는 필요없다
         Loan loan = loanService.borrowBooks(loanRequest);
 
+        if(loan == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
         LoanResponse loanResponse = new LoanResponse();
 
         loanResponse.setReturnDateTime(loan.getReturnDateTime());
@@ -48,17 +55,23 @@ public class LoanController {
 
         return ResponseEntity.ok().body(loanResponse);
     }
+    // 도서 전체 조회
+    @GetMapping("/loans")
+    public ResponseEntity<List<Loan>> getAllLoans() {
+        List<Loan> loanList = loanService.getAllLoans();
+        return ResponseEntity.status(HttpStatus.OK).body(loanList);
+    }
 
     //특정 대출 기록 조회
     @GetMapping("/loans/{id}")
-    public ResponseEntity<Loan> getLoan(@PathVariable long id){
+    public ResponseEntity<LoanResponse> getLoan(@PathVariable long id){
         Loan loan = loanService.getLoan(id);
         if(loan == null){
             return ResponseEntity.notFound().build();
         }
         LoanResponse loanResponse = convert(loan);
 
-        return ResponseEntity.status(HttpStatus.OK).body(loan);
+        return ResponseEntity.status(HttpStatus.OK).body(loanResponse);
     }
 
     @PutMapping("/Loans/{id}/return")
@@ -72,10 +85,12 @@ public class LoanController {
     @PutMapping("/loans/{id}/extend")
     //특정 유저가 특정 도서반납 일자 연장
     public ResponseEntity<Void> extended(@PathVariable long id){
-        Loan loan = loanService.extend(id);
+        loanService.extend(id);
 
         return ResponseEntity.ok().build();
     }
+
+
 
     private LoanResponse convert(Loan loan){
         LoanResponse loanResponse = new LoanResponse();

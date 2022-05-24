@@ -28,4 +28,9 @@
             returnDateTime = NOW()
         WHERE id = #{id}
     </update>
+
+    <select id="findAllLoans" resultType="com.example.springex.entitiy.Loan">
+        SELECT *
+        FROM loans
+    </select>
 </mapper>

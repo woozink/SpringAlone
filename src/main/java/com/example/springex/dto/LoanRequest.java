@@ -8,5 +8,5 @@ import java.time.LocalDateTime;
 public class LoanRequest {
     private long userId;
     private long bookId;
-
+    private Boolean isRented;
 }

@@ -13,5 +13,7 @@ public interface UserMapper {
     User findUserByNameAndAge(@Param("name") String name, @Param("age") int age);
     void insertUser(@Param("user") User user);
     void updateUser(@Param("id") long id, @Param("user") User user);
-    void deleteUserById(long id);
+    void deactivateUserById(long id);
+    User findLoanDataById(long id);
+
 }

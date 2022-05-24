@@ -1,10 +1,18 @@
 package com.example.springex.dto;
 
-public class UserResponse {
+import com.example.springex.entitiy.User;
+
+public class UserResponseWithoutName {
     private long id;
-    private String name;
     private String email;
     private int age;
+
+    public UserResponseWithoutName(){}
+    public UserResponseWithoutName(User user) {
+        this.id = user.getId();
+        this.email = user.getEmail();
+        this.age= user.getAge();
+    }
 
     public long getId() {
         return id;
@@ -12,14 +20,6 @@ public class UserResponse {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getEmail() {
@@ -36,5 +36,23 @@ public class UserResponse {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public void setUser(User user) {
+        this.id = user.getId();
+        this.email = user.getEmail();
+        this.age= user.getAge();
+    }
+
+    // setter로 User를 받는다
+    // Constructor에 User를 받는다
+    // static method로 User를 받는다
+
+    public static UserResponseWithoutName convert(User user) {
+        UserResponseWithoutName response = new UserResponseWithoutName();
+        response.id = user.getId();
+        response.email = user.getEmail();
+        response.age= user.getAge();
+        return response;
     }
 }
