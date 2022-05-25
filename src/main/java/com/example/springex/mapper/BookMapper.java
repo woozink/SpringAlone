@@ -10,7 +10,7 @@ import java.util.List;
 public interface BookMapper {
     List<Book> findAllBooks();
     Book findBookById(long id);
-    Book findRentById(long id);
+    boolean findRentById(long id);
     Book findBookByNameAndAuthorAndPage(@Param("name") String name,@Param("author") String author, @Param("page") int page);
     void insertBook(@Param("book") Book book);
     void updateBook(@Param("book") Book book, @Param("id") long id);

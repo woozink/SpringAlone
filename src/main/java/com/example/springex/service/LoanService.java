@@ -22,8 +22,8 @@ public class LoanService {
     //대출일 , 반납 예정일
     public Loan borrowBooks(LoanRequest loanRequest) {
         Book book = bookMapper.findBookById(loanRequest.getBookId());
-        Book book1 = bookMapper.findRentById(loanRequest.getBookId());
-        if (book.isActivate() || !book1.isRented()) {
+        // user 가 active인지도 확인 ************************************
+        if (book.isActivate() && !book.isRented()) {
             Loan loan = new Loan();
             loan.setReturnDateTime(null);
             loan.setReturned(false);

@@ -60,8 +60,8 @@ public class BookController {
 
     // 특정 Id의 반납 여부 조회
     @GetMapping("/books/rented/{id}")
-    public ResponseEntity<Book> isRented(@PathVariable long id) {
-        Book book = bookService.isRented(id);
+    public ResponseEntity<Boolean> isRented(@PathVariable long id) {
+        Boolean book = bookService.isRented(id);
         BookResponse bookResponse = new BookResponse();
 
         if (book == null) {
@@ -86,7 +86,11 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
-
+    // input, output
+//    @GetMapping("/books/search")
+//    public ResponseEntity<List<Book>> searchBook(){
+//        //
+//    }
 
 
     private BookResponse convert(Book book) {

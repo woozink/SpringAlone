@@ -2,18 +2,12 @@ package com.example.springex.service;
 
 import com.example.springex.dto.BookRequest;
 import com.example.springex.entitiy.Book;
-import com.example.springex.entitiy.Loan;
 import com.example.springex.mapper.BookMapper;
 import com.example.springex.mapper.LoanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.example.springex.entitiy.Book.book;
 
@@ -44,7 +38,7 @@ public class BookService {
         return bookMapper.findBookById(id);
     }
 
-    public Book  isRented(long id) {
+    public boolean isRented(long id) {
         return bookMapper.findRentById(id);
     }
 

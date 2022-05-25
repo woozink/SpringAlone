@@ -6,12 +6,14 @@ public class UserResponseWithoutName {
     private long id;
     private String email;
     private int age;
+    private boolean isActivate;
 
     public UserResponseWithoutName(){}
     public UserResponseWithoutName(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.age= user.getAge();
+        this.isActivate = user.isActivate();
     }
 
     public long getId() {
@@ -20,6 +22,14 @@ public class UserResponseWithoutName {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setActivate(boolean activate) {
+        isActivate = activate;
+    }
+
+    public boolean isActivate() {
+        return isActivate;
     }
 
     public String getEmail() {
@@ -42,6 +52,7 @@ public class UserResponseWithoutName {
         this.id = user.getId();
         this.email = user.getEmail();
         this.age= user.getAge();
+        this.isActivate = user.isActivate();
     }
 
     // setter로 User를 받는다
@@ -53,6 +64,7 @@ public class UserResponseWithoutName {
         response.id = user.getId();
         response.email = user.getEmail();
         response.age= user.getAge();
+        response.isActivate = user.isActivate();
         return response;
     }
 }
