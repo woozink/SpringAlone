@@ -15,11 +15,6 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.List;
 
-// Spring Bean이란?
-// 자바 어노테이션
-// Spring Bean 등록 어노테이션
-// @Controller, @Service, @Repository, @Component
-
 @RestController
 @RequestMapping("")
 public class LoanController {
@@ -33,13 +28,13 @@ public class LoanController {
 
     //특정 유저가 특정 도서 대출(대출일, 반납예정일)
     @PostMapping("/loans")
-    public ResponseEntity<LoanResponse> borrowBook(@RequestBody LoanRequest loanRequest){
+    public ResponseEntity<LoanResponse> borrowBook(@RequestBody LoanRequest loanRequest) {
         // 서버에서는 어떤 값이 필요할까?
         // bookId, userId
         // 대출날짜는 필요없다
         Loan loan = loanService.borrowBooks(loanRequest);
 
-        if(loan == null) {
+        if (loan == null) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -55,6 +50,7 @@ public class LoanController {
 
         return ResponseEntity.ok().body(loanResponse);
     }
+
     // 도서 전체 조회
     @GetMapping("/loans")
     public ResponseEntity<List<Loan>> getAllLoans() {
@@ -64,9 +60,9 @@ public class LoanController {
 
     //특정 대출 기록 조회
     @GetMapping("/loans/{id}")
-    public ResponseEntity<LoanResponse> getLoan(@PathVariable long id){
+    public ResponseEntity<LoanResponse> getLoan(@PathVariable long id) {
         Loan loan = loanService.getLoan(id);
-        if(loan == null){
+        if (loan == null) {
             return ResponseEntity.notFound().build();
         }
         LoanResponse loanResponse = convert(loan);
@@ -74,25 +70,24 @@ public class LoanController {
         return ResponseEntity.status(HttpStatus.OK).body(loanResponse);
     }
 
-    @PutMapping("/Loans/{id}/return")
+    @PutMapping("/Loans/return")
     //특정 유저가 특정 도서 반납
-    public ResponseEntity<Void> returned(@PathVariable long id){
-        loanService.returned(id);
+    public ResponseEntity<Void> returned(@RequestBody LoanRequest loanRequest) {
+        loanService.returned(loanRequest);
 
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/loans/{id}/extend")
     //특정 유저가 특정 도서반납 일자 연장
-    public ResponseEntity<Void> extended(@PathVariable long id){
+    public ResponseEntity<Void> extended(@PathVariable long id) {
         loanService.extend(id);
 
         return ResponseEntity.ok().build();
     }
 
 
-
-    private LoanResponse convert(Loan loan){
+    private LoanResponse convert(Loan loan) {
         LoanResponse loanResponse = new LoanResponse();
         loanResponse.setLoanDateTime(loan.getReturnDateTime());
         loanResponse.setReturned(loan.isReturned());
