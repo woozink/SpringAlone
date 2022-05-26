@@ -3,8 +3,10 @@ package com.example.springex.service;
 import com.example.springex.dto.LoanRequest;
 import com.example.springex.entitiy.Book;
 import com.example.springex.entitiy.Loan;
+import com.example.springex.entitiy.User;
 import com.example.springex.mapper.BookMapper;
 import com.example.springex.mapper.LoanMapper;
+import com.example.springex.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +20,16 @@ public class LoanService {
     private LoanMapper loanMapper;
     @Autowired
     private BookMapper bookMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     //대출일 , 반납 예정일
     public Loan borrowBooks(LoanRequest loanRequest) {
         Book book = bookMapper.findBookById(loanRequest.getBookId());
+        User user = userMapper.findUserById(loanRequest.getUserId());
+
         // user 가 active인지도 확인 ************************************
-        if (book.isActivate() && !book.isRented()) {
+        if (book.isActivate() && !book.isRented() && user.isActivate()) {
             Loan loan = new Loan();
             loan.setReturnDateTime(null);
             loan.setReturned(false);
