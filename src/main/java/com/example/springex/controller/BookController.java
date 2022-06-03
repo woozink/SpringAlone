@@ -32,6 +32,7 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(bookList);
     }
 
+
     // 도서 수정(도서명, 저자, 페이지)
     @PutMapping("/books/{id}")
     public ResponseEntity<BookResponse> putBook(@PathVariable long id, @RequestBody BookRequest bookRequest) {
@@ -54,7 +55,7 @@ public class BookController {
         if (book == null) {
             return ResponseEntity.notFound().build();
         }
-        BookResponse userResponse = convert(book);
+        BookResponse bookResponse = convert(book);
         return ResponseEntity.status(HttpStatus.OK).body(book);
     }
 
@@ -86,12 +87,32 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
-    // input, output
-//    @GetMapping("/books/search")
-//    public ResponseEntity<List<Book>> searchBook(){
-//        //
-//    }
+//     input, output
+//     Get /books/search - Query Param - 책 목록 응답
+//    API를 어떻게 설계할것인가
+//     1. HTTP Method (Get? Put? Post? Delete?)
+//     2. Request Path (/../../..)
+//     3. Request Param (Path Variable / Request Body / Query Param,Query String==@RequestParam)
+//     4. Response - 무엇을 응답해줄것인가 ? 내부 구현은 어떻게 할 것인가
 
+//     1. Service (비즈니스로직/핵심로직)
+//     2. DB에서 값을 가져오는가? 어떻게 무엇을 가져올 것인가?
+
+    // 책이름으로 책 검색
+    @GetMapping("/books/search")
+    public ResponseEntity<List<Book>> searchBook(@RequestParam(value = "name")String name){
+        List<Book> bookList = bookService.searchBook(name);
+        if (name == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(bookList);
+    }
+
+    // /books/search2/{name}
+    @GetMapping("/books/search2")
+    public void search2(@RequestParam String name, @RequestParam int age){
+        System.out.println(name + " " + age);
+    }
 
     private BookResponse convert(Book book) {
         BookResponse bookResponse = new BookResponse();
@@ -102,6 +123,4 @@ public class BookController {
 
         return bookResponse;
     }
-
-
 }

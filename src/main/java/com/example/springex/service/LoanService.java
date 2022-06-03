@@ -38,7 +38,7 @@ public class LoanService {
             loan.setUserId(loanRequest.getUserId());
 
             book.setRented(true);
-
+            bookMapper.updateBook(book);
             loanMapper.save(loan);
 
             return loan;
@@ -52,11 +52,18 @@ public class LoanService {
     }
 
     // 책 반납
-    public void returned(LoanRequest loanRequest) {
-        Book book = bookMapper.findBookById(loanRequest.getBookId());
-        book.setRented(false);
+    public void returned(int bookId) {
+        // loan을 return = true
+        // book을 rent =false
 
-        loanMapper.returnBook(loanRequest.getBookId());
+        // DB에서 조회 -> 어플리케이션
+        Book book = bookMapper.findBookById(bookId);
+        // 어플리케이션 상에서 false 로 변경
+        book.setRented(false);
+        // DB에도 반영
+        bookMapper.updateBook(book);
+
+        loanMapper.returnBook(bookId);
     }
 
     //반납일 연장 - 반납일 7일 연장

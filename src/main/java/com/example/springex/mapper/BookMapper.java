@@ -13,8 +13,9 @@ public interface BookMapper {
     boolean findRentById(long id);
     Book findBookByNameAndAuthorAndPage(@Param("name") String name,@Param("author") String author, @Param("page") int page);
     void insertBook(@Param("book") Book book);
-    void updateBook(@Param("book") Book book, @Param("id") long id);
+    void updateBook(@Param("book") Book book);
     void deactivateBookById(long id);
     void turnOnBook(@Param("id")long id);
+    List<Book> findBookByName(String name);
 
 }

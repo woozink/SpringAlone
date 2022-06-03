@@ -19,6 +19,7 @@ public class BookService {
     private BookMapper bookMapper;
     @Autowired
     private LoanMapper loanMapper;
+
     public Book insert(BookRequest bookRequest) {
         book = new Book();
         book.setName(bookRequest.getName());
@@ -38,6 +39,10 @@ public class BookService {
         return bookMapper.findBookById(id);
     }
 
+    public List<Book> searchBook(String name){
+        return bookMapper.findBookByName(name);
+    }
+
     public boolean isRented(long id) {
         return bookMapper.findRentById(id);
     }
@@ -46,14 +51,16 @@ public class BookService {
 
 
     public Book update(long id, BookRequest bookRequest) {
-        Book book = new Book();
+        Book book = bookMapper.findBookById(id);
+
         if (book == null) {
             return null;
         } else {
+            book.setId(id);
             book.setAuthor(bookRequest.getAuthor());
             book.setName(bookRequest.getName());
             book.setPage(bookRequest.getPage());
-            bookMapper.updateBook(book, id);
+            bookMapper.updateBook(book);
             return book;
         }
     }

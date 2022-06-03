@@ -3,6 +3,7 @@ package com.example.springex.controller;
 
 import com.example.springex.dto.LoanRequest;
 import com.example.springex.dto.LoanResponse;
+import com.example.springex.dto.ReturnRequest;
 import com.example.springex.entitiy.Book;
 import com.example.springex.entitiy.Loan;
 import com.example.springex.service.LoanService;
@@ -72,8 +73,8 @@ public class LoanController {
 
     @PutMapping("/Loans/return")
     //특정 유저가 특정 도서 반납
-    public ResponseEntity<Void> returned(@RequestBody LoanRequest loanRequest) {
-        loanService.returned(loanRequest);
+    public ResponseEntity<Void> returned(@RequestBody ReturnRequest request) {
+        loanService.returned(request.getBookId());
 
         return ResponseEntity.ok().build();
     }

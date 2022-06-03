@@ -37,9 +37,10 @@
         SET
             name=#{book.name},
             author=#{book.author},
-            page=#{book.page}
+            page=#{book.page},
+            isRented=#{book.isRented}
         WHERE
-            id = #{id}
+            id = #{book.id}
     </update>
 
     <update id="turnOnBook">
@@ -48,4 +49,10 @@
             isActivate = TRUE
         WHERE id = #{id}
     </update>
+
+    <select id="findBookByName" resultType="com.example.springex.entitiy.Book">
+        SELECT id, author, name
+        FROM books
+        WHERE name like CONCAT('%',#{name},'%')
+    </select>
 </mapper>
