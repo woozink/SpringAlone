@@ -4,6 +4,9 @@ import com.example.springex.dto.UserIsActiveResponse;
 import com.example.springex.dto.UserRequest;
 import com.example.springex.dto.UserResponse;
 import com.example.springex.dto.UserResponseWithoutName;
+import com.example.springex.entitiy.Book;
+import com.example.springex.entitiy.Loan;
+import com.example.springex.service.BookService;
 import com.example.springex.service.UserService;
 import com.example.springex.entitiy.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +17,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+// Argument Resolver
 @RestController
 @RequestMapping("")
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private BookService bookService;
 
     //회원가입 API(유저 등록)
-    @PostMapping("/users")
     public UserResponse signUp(@RequestBody UserRequest userRequest){
         User user = userService.insert(userRequest);
         UserResponse userResponse = convert(user);
@@ -30,22 +34,6 @@ public class UserController {
         return userResponse;
     }
 
-    //모든 회원 정보를 가져 오는 API
-    @GetMapping("/users")
-    // Generic
-    public List<UserResponseWithoutName> getALLUsers(){
-        List<User> userList = userService.getAllUsers();
-        //List<UserResponseWithoutName> userResponses = new ArrayList<>();
-       // for(User user : userList){
-            //UserResponseWithoutName response = new UserResponseWithoutName(userList.get(i));
-        //    UserResponseWithoutName response  = UserResponseWithoutName.convert(user);
-        //    userResponses.add(response);
-        //}
-        List<UserResponseWithoutName> userResponses2 = userList.stream()
-                .map(UserResponseWithoutName::new)
-                .collect(Collectors.toList());
-        return userResponses2;
-    }
 
     //회원 정보 수정
     @PutMapping("/users/{id}")
@@ -77,6 +65,40 @@ public class UserController {
         return userResponse;
     }
 
+    //모든 회원 정보를 가져 오는 API
+    @GetMapping("/users")
+    // Generic
+    public List<UserResponseWithoutName> getALLUsers(){
+        List<User> userList = userService.getAllUsers();
+        //List<UserResponseWithoutName> userResponses = new ArrayList<>();
+        // for(User user : userList){
+        //UserResponseWithoutName response = new UserResponseWithoutName(userList.get(i));
+        //    UserResponseWithoutName response  = UserResponseWithoutName.convert(user);
+        //    userResponses.add(response);
+        //}
+        List<UserResponseWithoutName> userResponses2 = userList.stream()
+                .map(UserResponseWithoutName::new)
+                .collect(Collectors.toList());
+        return userResponses2;
+    }
+
+    @GetMapping("/users/search2/{name}")
+    public List<UserResponse> getUserName(@PathVariable String name){
+        List<User> userList = userService.getUserName(name);
+        if(userList==null){
+            //return ResponseEntity.notFound().build();
+            return null;
+        }
+        List<UserResponse> userResponses = new ArrayList<>();
+        for(User user: userList){
+            UserResponse response = new UserResponse();
+            // user -> userResponse
+            response = convert(user);
+        }
+
+        return userResponses;
+    }
+
     //특정 ID의 유저 삭제
     @DeleteMapping("/users/{id}")
     public void delete(@PathVariable("id") long id){
@@ -90,13 +112,23 @@ public class UserController {
         UserResponse userResponse = new UserResponse();
         userResponse.setLoanData(user.getLoanData());
     }
-
+    // 응답
     @GetMapping("/users/{id}/isActive")
     public UserIsActiveResponse isActive(@PathVariable long id){
         User user = userService.getUser(id);
 
         UserIsActiveResponse userResponse = new UserIsActiveResponse(user.isActivate());
         return userResponse;
+    }
+
+    //  user 이름으로 빌린 책 검색
+    @GetMapping("/users/search/{name}")
+    public ResponseEntity<List<Book>> SearchBookByName(@PathVariable String name){
+        List<Book> bookList = bookService.searchBook(name);
+        if (name == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(bookList);
     }
 
     private UserResponse convert(User user){
@@ -109,4 +141,6 @@ public class UserController {
 
         return userResponse;
     }
+
+
 }

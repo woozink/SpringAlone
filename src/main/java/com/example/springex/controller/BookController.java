@@ -18,7 +18,6 @@ public class BookController {
     private BookService bookService;
 
     //도서등록
-    @PostMapping("/books")
     public ResponseEntity<Book> registraionBook(@RequestBody BookRequest bookRequest) {
         Book book = bookService.insert(bookRequest);
 

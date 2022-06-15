@@ -10,6 +10,7 @@ import java.util.List;
 public interface UserMapper {
     List<User> findAllUsers();
     User findUserById(long id);
+    List<User> findUserByName(@Param("nameList") List<String> name);
     User findUserByNameAndAge(@Param("name") String name, @Param("age") int age);
     void insertUser(@Param("user") User user);
     void updateUser(@Param("id") long id, @Param("user") User user);

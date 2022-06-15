@@ -14,6 +14,17 @@
         WHERE id = #{id}
     </select>
 
+    <select id="findUserByName" resultType="com.example.springex.entitiy.User">
+        SELECT *
+        FROM users
+        WHERE
+        IN #{name}
+        <foreach collection="list" item="value" index="idx" separator="," open="(" close=")">
+        #{value}
+        </foreach>
+    </select>
+
+
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
         INSERT users(name,email,password,age)
         VALUES(#{user.name}, #{user.email}, #{user.password}, #{user.age});

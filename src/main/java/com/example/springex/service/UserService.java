@@ -39,6 +39,10 @@ public class UserService {
         //특정 유저의 정보
         return userMapper.findUserById(id);
     }
+    public List<User> getUserName(String name) {
+        //특정 유저의 정보
+        return userMapper.findUserByName(name);
+    }
 
     public User update(long id, UserRequest userRequest) {
         // 해당 id를 가진 유저가 없으면 null을 바로 반환

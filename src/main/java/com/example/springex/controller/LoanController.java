@@ -4,15 +4,12 @@ package com.example.springex.controller;
 import com.example.springex.dto.LoanRequest;
 import com.example.springex.dto.LoanResponse;
 import com.example.springex.dto.ReturnRequest;
-import com.example.springex.entitiy.Book;
 import com.example.springex.entitiy.Loan;
 import com.example.springex.service.LoanService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.List;
 
@@ -28,7 +25,6 @@ public class LoanController {
     // 특정 유저의 도서 대출 기록 조회 -0
 
     //특정 유저가 특정 도서 대출(대출일, 반납예정일)
-    @PostMapping("/loans")
     public ResponseEntity<LoanResponse> borrowBook(@RequestBody LoanRequest loanRequest) {
         // 서버에서는 어떤 값이 필요할까?
         // bookId, userId
@@ -87,6 +83,9 @@ public class LoanController {
         return ResponseEntity.ok().build();
     }
 
+    // user id
+    // 1. 이 user가 빌린 대출 기록 조회 loan id, userid, book id, loan date
+    // 2. 대출 기록이랑 연결된 book을 조회
 
     private LoanResponse convert(Loan loan) {
         LoanResponse loanResponse = new LoanResponse();
