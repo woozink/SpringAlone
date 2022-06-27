@@ -82,6 +82,7 @@ public class UserController {
         return userResponses2;
     }
 
+    // 유저 이름으로 유저 리스트 찾기
     @GetMapping("/users/search2/{name}")
     public List<UserResponse> getUserName(@PathVariable String name){
         List<User> userList = userService.getUserName(name);
@@ -90,10 +91,15 @@ public class UserController {
             return null;
         }
         List<UserResponse> userResponses = new ArrayList<>();
+
+        // 3개의 ddd가 잘 들어 왔는데 for문을 돌리면서 convert된 부분이 리턴이 되지 않는다.
+        // userList
+        // -> 하나하나 userResponse로 바꿔서
+        // -> userResponses에 추가한다
+        // -> userResponses를 응답한다
         for(User user: userList){
-            UserResponse response = new UserResponse();
-            // user -> userResponse
-            response = convert(user);
+            UserResponse response = convert(user);
+            userResponses.add(response);
         }
 
         return userResponses;

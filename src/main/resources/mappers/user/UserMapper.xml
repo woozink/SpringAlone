@@ -17,11 +17,7 @@
     <select id="findUserByName" resultType="com.example.springex.entitiy.User">
         SELECT *
         FROM users
-        WHERE
-        IN #{name}
-        <foreach collection="list" item="value" index="idx" separator="," open="(" close=")">
-        #{value}
-        </foreach>
+        WHERE name like CONCAT('%',#{name},'%')
     </select>
 
 
